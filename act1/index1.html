@@ -1,0 +1,20 @@
+<html>	
+	<head>
+		<title>Activity</title>
+	</head>
+
+<body onload="timedText();">
+	<img id='image' src="img1.jpg" height="50%;">
+
+	</div>
+		<script>
+			function timedText() {
+    		var x = document.getElementById("image");
+    		setTimeout(function(){x.src="img3.jpg";}, 5000);
+    		setTimeout(function(){x.src="img2.jpg";}, 15000);
+    		setTimeout(function(){location.reload();}, 18000);
+			}
+		</script>
+
+</body>
+</html>
