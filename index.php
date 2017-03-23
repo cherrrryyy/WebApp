@@ -1,51 +1,66 @@
-<?php
-
-require('anyco_ui.inc');
-
-$conn = oci_connect('hr','hr','//localhost/XE');
-
-if(!$conn){
-			$e = oci_error();
-			trigger_error('Could not connect to database: '.$e['message'], E_USER_ERROR);
-		}
-		if(isset($_POST['submit'])){
-			$username = $_POST['username'];
-			$password = $_POST['password'];
-
-		$s = oci_parse($conn, "Select * From EMPLOYEES Where EMPLOYEE_ID ='" . $username ."' and EMAIL ='" . $password ."'");
-		if(!$s){
-			$e = oci_error($conn);
-			trigger_error('Could not parse statement: ' .$e['message'], E_USER_ERROR);
-		}
-		$r = oci_execute($s);
-		if(!$r){
-			$e = oci_error($conn);
-			trigger_error('Could not execute statement: ' .$e['message'], E_USER_ERROR);
-		}
-		$row = oci_fetch_array($s);
-
-		$a = oci_num_rows($s);
-		if($a > 0){
-			header("Location: anyco.php");
-		}else{
-			echo "Incorrect Username/Password";
-		}
-	}
-
-ui_print_header('Log In');
-
-?>
-
 <html>
-<head>
-	<title></title>
-</head>
+	<head>
+		<title></title>
+	</head>
 <body>
-	<form method="post" action="#">
-		<input type="number" steps="1" min="0" name="username" placeholder="Enter Username"/><br/><br/>
-		<input type="password" name="password" placeholder="Enter Password"/><br/></br>
-		<input type="submit" name="submit" value="LogIn" /><br/>	
-	</form>
+	<?php
+ 		
+ 		$sub = array( array('subject' => 'Trigonometry',
+ 							'catalog' => 'MATH',
+ 							'code' => '114',
+ 							'grade' => 'C'),
+ 				array('subject' => 'Philosophy',
+ 							'catalog' => 'HUMA',
+ 							'code' => '111',
+ 							'grade' => 'B+'),
+ 				array('subject' => 'Technical Writing',
+ 							'catalog' => 'ENGLO',
+ 							'code' => '101',
+ 							'grade' => 'B'),
+ 				array('subject' => 'Physics',
+ 							'catalog' => 'NCSI',
+ 							'code' => '111',
+ 							'grade' => 'B'),
+ 				array('subject' => 'Accounting',
+ 							'catalog' => 'ACTG',
+ 							'code' => '101',
+ 							'grade' => 'B'),
+ 				array('subject' => 'Database',
+ 							'catalog' => 'CS',
+ 							'code' => '351',
+ 							'grade' => 'C+'),
+ 				array('subject' => 'Psychology',
+ 							'catalog' => 'PSYC',
+ 							'code' => '101',
+ 							'grade' => 'C'),
+ 				array('subject' => 'Physical Education',
+ 							'catalog' => 'PHYED',
+ 							'code' => '101',
+ 							'grade' => 'A'),		
+		  );
 
+			$json = json_encode($sub);
+		
+	?>
+	<script language = "javascript" type = "text/javascript">
+		var arr = JSON.parse('<?php echo $json; ?>'); 
+
+		arr.push({"subject" : "Data Comm", "catalog" : "IT", "code" : "211", "grade" : "B"});
+		arr.push({"subject" : "Web App", "catalog" : "IT", "code" : "341", "grade" : "B-"});
+		arr.push({"subject" : "Operating System", "catalog" : "CS", "code" : "342", "grade" : "A-"});
+
+		document.writeln("<table border='1'");
+	 	document.writeln("<tr><td>Subject</td><td>Subject Catalog</td><td>Subject Code</td></td><td>Grade</td></tr>")
+	 	for(x = 0; arr.length > 0; x++){
+	 		document.writeln("<tr>");
+		 	document.writeln("<td>"+ arr[x].subject +"</td>");
+		 	document.writeln("<td>"+ arr[x].catalog +"</td>");
+		 	document.writeln("<td>"+ arr[x].code +"</td>");
+		 	document.writeln("<td>"+ arr[x].grade +"</td>")
+		 	document.writeln("</tr>")
+		 }
+		 document.writeln("</table>");
+
+	</script>
 </body>
 </html>
